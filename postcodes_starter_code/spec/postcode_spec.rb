@@ -5,69 +5,70 @@ describe Postcodesio do
   context 'requesting information on a single postcode works correctly' do
 
     before(:all) do
-      @postcodesio = Postcodesio.new
-      @response = @postcodesio.get_single_postcode('SE42BE') #input a postcode
+      @single_service = Postcodesio.new.single_postcode_service
+      @random_postcode = GeneratorService.new.generate_postcode
+      @single_service.get_single_postcode(@random_postcode) #input a postcode
     end
 
     it "should respond with a status message of 200" do
-      expect(@postcodesio.get_status_message("SE42BE")).to eq 200
+      expect(@single_service.get_response_code).to eq 200
     end
 
     it "should have a results hash" do
-      expect(@postcodesio.get_single_postcode('SE42BE')).to be_kind_of(Hash)
+      expect(@single_service.get_result_code).to be_kind_of(Hash)
     end
 
-    it "should return a postcode between 5-10 in length"  do
-      expect(@postcodesio.postcode_length_check("SE42BE")).to be_between(5, 10)
+    it "should return a postcode between 5-7 in length"  do
+      expect(@single_service.postcode_length_check).to be_between(5, 7)
 
     end
 
     it "should return an quality key integer between 1-9" do
-      expect(@postcodesio.check_quality("SE42BE")).to be_between(1, 10)
+      expect(@single_service.check_quality).to be_between(1,9)
     end
 
     it "should return an ordnance survey eastings value as integer" do
-      expect(@postcodesio.check_eastings_class('SE42BE')).to be_kind_of(Integer)
+      expect(@single_service.check_eastings_class).to be_kind_of(Integer)
     end
 
     it "should return an ordnance survey northings value as integer" do
-      expect(@postcodesio.check_northings_class('SE42BE')).to be_kind_of(Integer)
+      expect(@single_service.check_northings_class).to be_kind_of(Integer)
     end
 
     it "should return a country which is one of the four constituent countries of the UK" do
-      expect(@postcodesio.check_country("SY234LA")).to eq("England") | eq("Wales") | eq("Scotland") | eq("Northern Ireland")
+      expect(@single_service.check_country).to eq("England") | eq("Wales") | eq("Scotland") | eq("Northern Ireland")
     end
 
     it "should return a string value for NHS authority " do
-      expect(@postcodesio.nhs_authority_float("SE42BE")).to be_kind_of(String)
+      expect(@single_service.nhs_authority_float).to be_kind_of(String)
     end
 
     it "should return a longitude float value" do
-      expect(@postcodesio.longitude_float_check("SE42BE")).to be_kind_of(Float)
+      expect(@single_service.longitude_float_check).to be_kind_of(Float)
     end
 
     it "should return a latitude float value" do
-      expect(@postcodesio.latitude_float_check("SE42BE")).to be_kind_of(Float)
+      expect(@single_service.latitude_float_check).to be_kind_of(Float)
     end
 
     it "should return a parliamentary constituency string" do
-      expect(@postcodesio.parliamentary_constituency_check("SE42BE")).to be_kind_of(String)
+      expect(@single_service.parliamentary_constituency_check).to be_kind_of(String)
     end
 
     it "should return a european_electoral_region string" do
-      expect(@postcodesio.electoral_region_string("SE42BE")).to be_kind_of(String)
+      expect(@single_service.electoral_region_string).to be_kind_of(String)
     end
 
     it "should return a primary_care_trust string" do
-      expect(@postcodesio.primary_care_trust_string("SE42BE")).to be_kind_of(String)
+      expect(@single_service.primary_care_trust_string).to be_kind_of(String)
     end
 
     it "should return a region string" do
-      expect(@postcodesio.region_string_check("SE42BE")).to be_kind_of(String)
+      expect(@single_service.region_string_check).to be_kind_of(String)
     end
 
     it "should return a parish string" do
-      expect(@postcodesio.parish_string_check("SE42BE")).to be_kind_of(String)
+      expect(@single_service.parish_string_check).to be_kind_of(String)
     end
 
     it "should return a lsoa string" do
